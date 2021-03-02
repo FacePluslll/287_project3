@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class main {
-	private static TreeNode root;
-
 	public static void main(String[] args) throws FileNotFoundException {
 		FileInputStream inputFile = new FileInputStream("Morse_Code.txt");
 		Scanner scnr = new Scanner(inputFile);
@@ -33,24 +31,33 @@ public class main {
 		
 		root = buildTreeNode(inputArray);
 		
-		
 		//creates another scanner that takes in user input
 		//calls encode method
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Enter a sentence to convert to morse Code: ");
 		String StringToConvert = scanner.nextLine();
 
-		// Our program outputs the message with a single space between codes and a double space between words
-		String Morse = encode(StringToConvert, root);
-		System.out.println("Encoded String: " + Morse);
-		String decodedMsg = decode(Morse, root);
-		System.out.println("Decoded String: " + decodedMsg);
-		
+        if(StringToConvert.charAt(0) == '.' || StringToConvert.charAt(0) == '-'){
+            // Our program outputs the message with a single space between codes and a double space between words
+		    System.out.println("Encoded String: " + StringToConvert);
+		    String decodedMsg = decode(StringToConvert, root);
+		    System.out.println("Decoded String: " + decodedMsg);
+        }
+        else{
+            // Our program outputs the message with a single space between codes and a double space between words
+		    String Morse = encode(StringToConvert, root);
+		    System.out.println("Encoded String: " + Morse);
+		    String decodedMsg = decode(Morse, root);
+		    System.out.println("Decoded String: " + decodedMsg);
+        }
+        
 		// Closes open scanners and files
 		scanner.close();
 		scnr.close();
 	}
 
+	//Erik
+	//Builds a tree with the given list from the input file
 	public static TreeNode buildTreeNode(ArrayList<String[]> inputList) {
 		// root node will be null since a height of 0 leads to no symbols in a string
 		TreeNode root = new TreeNode(null);

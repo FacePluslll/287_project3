@@ -39,13 +39,16 @@ public class main {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Enter a sentence to convert to morse Code: ");
 		String StringToConvert = scanner.nextLine();
+
+		// Our program outputs the message with a single space between codes and a double space between words
 		String Morse = encode(StringToConvert, root);
-		System.out.println(Morse);
+		System.out.println("Encoded String: " + Morse);
+		String decodedMsg = decode(Morse, root);
+		System.out.println("Decoded String: " + decodedMsg);
 		
+		// Closes open scanners and files
 		scanner.close();
 		scnr.close();
-		// all other code should happen past this point...
-
 	}
 
 	public static TreeNode buildTreeNode(ArrayList<String[]> inputList) {
@@ -114,8 +117,9 @@ public class main {
 		String Morse = "";
 		for (int i=0; i< input.length(); i++) {
 			letter = input.substring(i, i+1);
-			Morse += encodeLetter(root.left, letter) + " ";
-			Morse += encodeLetter(root.right, letter) + " ";
+			Morse += encodeLetter(root.left, letter);
+			Morse += encodeLetter(root.right, letter);
+			Morse = Morse.concat(" ");
 		}
 		return Morse;
 	}
@@ -137,6 +141,36 @@ public class main {
 			}
 			return Code;
 		}
-		
 	}
+
+	//Joey
+	// A method that will take in an encoded string with the codes being seperated by a single space and a word is sperated with two spaces
+	// Also is expected the Tree as a parameter
+	// This method decodes a given encoded String to its english form
+	public static String decode(String input, TreeNode root) {
+		TreeNode copy = root; // Creates a copy of the root which is the start of the tree
+		String[] inpMsg = input.split(" "); // Splits the encoded input at all the spaces which means it will create an array of each code with a blank string for the double space which is the space that would seperate the words
+		String decodeMsg = ""; // A string that will be the decoded message
+		Character c = ' '; // A character that will be used to get the character at a point in the string
+		for (String code : inpMsg) { // For loop to iterate through the array of codes, inpMsg
+			if (code.equals("")) { // Checks to see if it is a blank string, if it is that means its a space
+				decodeMsg = decodeMsg.concat(" "); // If it is, then add a space to the decoded message
+				continue; // Go to next element in the array (iterate the loop)
+			}
+			else { // If it is not a space
+				root = copy; // Set the root equal to the beginning of the tree
+				for (int i = 0; i < code.length(); i++) { // Iterate through the code, which will end at the node of the decoded letter
+					c = code.charAt(i); // Set a character equal to the character at the index of the string
+					if (c.equals('-')) { // Check to see if it is a dash
+						root = root.right; // If it is then go to the right branch of the tree
+					}
+					else if (c.equals('.')){ // Check to see if it is a dot
+						root = root.left; // If it is then go to the left branch of the tree
+					}
+				}
+				decodeMsg = decodeMsg.concat(root.val[0]); //concatenate the decodeMsg with the letter that was found, then go to the next code
+			}
+		}
+		return decodeMsg; // Return the completed decoded message
 	}
+}

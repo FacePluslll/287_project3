@@ -1,3 +1,5 @@
+package src.main;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -5,7 +7,7 @@ import java.util.Scanner;
 
 public class main {
 	public static void main(String[] args) throws FileNotFoundException {
-		FileInputStream inputFile = new FileInputStream("Morse_Code.txt");
+		FileInputStream inputFile = new FileInputStream("src/Morse_Code.txt");
 		Scanner scnr = new Scanner(inputFile);
 
 		TreeNode root;
